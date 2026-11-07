@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: shorts-approval-mannic
+    runtime: python
+    plan: 0.5c-512mb
+    region: singapore
+    autoDeployTrigger: 'off'
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn 'app:create_app()' --bind 0.0.0.0:$PORT --workers 1 --threads 2 --timeout 120 --access-logfile /dev/null
+    healthCheckPath: /healthz
+    disk:
+      name: approval-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: DATA_DIR
+        value: /var/data
+      - key: APP_SECRET
+        generateValue: true
+      - key: PUBLISHER_TOKEN
+        generateValue: true
+      - key: ADMIN_PASSWORD
+        sync: false

@@ -1,0 +1,2 @@
+cryptography>=45,<47
+gunicorn==23.0.0
